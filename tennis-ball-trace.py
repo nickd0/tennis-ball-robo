@@ -4,7 +4,6 @@ from imutils.video import VideoStream
 import numpy as np
 import argparse
 import cv2
-import imutils
 import time
 import random
 
@@ -76,13 +75,6 @@ if __name__ == '__main__':
 
     counter = 0
 
-    if args.get("webcam", False):
-        vs = VideoStream(src=0).start()
-        time.sleep(2.0)
-    elif args.get("video", False):
-        vs = cv2.VideoCapture(args["video"])
-        time.sleep(2.0)
-
     if args.get("hsvlow", False):
         hsvlow = tuple([int(n) for n in args.get("hsvlow").split(',')])
 
@@ -97,8 +89,8 @@ if __name__ == '__main__':
                 frame = cv2.imread(args.get("image"))
 
             elif args.get("webcam", False):
-                vs = VideoStream(src=0).start()
-                frame = vs.read()
+                cam = cv2.VideoCapture(0)
+                _, frame = cam.read()
 
             (ret, frameout, num) = process(frame, hsvlow, hsvhigh)
             if args.get("save", False) and args.get("image", False):
@@ -112,6 +104,7 @@ if __name__ == '__main__':
                 cv2.imshow("Frame", frameout)
 
             counter += 1
+
         # if the 'q' key is pressed, stop the loop
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
@@ -119,8 +112,8 @@ if __name__ == '__main__':
 
     if args.get("image", False): pass
     elif args.get("webcam", False):
-        vs.release()
+        cam.release()
     elif args.get("video", False):
-        vs.stop()
+        cam.stop()
 
     cv2.destroyAllWindows()
