@@ -1,11 +1,5 @@
-# python colortrace.py  -l 13,0,0 -u 255,102,255 -i /Users/nick/Downloads/1AB-1562961740.jpg
-# python colortrace.y -l 0,0,0 -u 255,106,255
-from imutils.video import VideoStream
-import numpy as np
 import argparse
 import cv2
-import time
-import random
 
 
 def process(frame, _hsvlow, _hsvhigh, vs=None):
